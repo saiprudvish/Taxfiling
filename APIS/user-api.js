@@ -42,6 +42,46 @@ userApi.post("/createuser",  expressErrorHandler(async (req, res) => {
 }))
 
 
+//user login
+userApi.post("/login", expressErrorHandler(async (req, res, next) => {
+
+    let userCollectionObject = req.app.get("userCollectionObject")
+
+    let credentials = req.body;
+
+    //verify username
+    let user = await userCollectionObject.findOne({ username: credentials.username })
+   //console.log(user)
+    //if user is not existed
+    if (user === null) {
+        res.send({ message: "Invalid username" })
+    }
+    //if user is existed
+    else {
+        //compare passwords
+        let result = await bcryptjs.compare(credentials.password, user.password)
+        //if pws not mtched
+        if (result === false) {
+            res.send({ message: "Invalid password" })
+        }
+        //if passwords are matched
+        else {
+            //create a token and send it as res 
+            let token = await jwt.sign({ username: credentials.username }, 'abcd', { expiresIn: 10 })
+
+            //remove password from user
+            delete user.password;
+            res.send({
+                message: "login-success",
+                token: token,
+                username: credentials.username,
+                userObj: user
+            })
+        }
+    }
+}))
+
+
 
 
 module.exports = userApi;

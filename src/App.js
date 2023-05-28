@@ -1,59 +1,80 @@
-import './App.css';
+import { Routes, Route, NavLink, Navigate, Link } from 'react-router-dom'
+import Home from './components/Home'
+import Register from './components/Register';
 import {useState} from 'react'
-import { useForm } from "react-hook-form";
-import axios from 'axios';
+import Login from './components/Login';
+import Efile from './components/efile';
 
-function App() {
-  
-  <h1 className="display-4 text-info text-center">Welcome to E-Filing app</h1>
-  const { register, handleSubmit } = useForm();
- 
-  
-  
-  const onFormSubmit = (userObj) => {
+function App(){
 
-     
-      //add userObj to formData object
+    let [userLoginStatus, setUserLoginStatus] = useState('');
+
+
+    const logOutUser = () => {
+      localStorage.clear();
+      setUserLoginStatus(false)
+      
+    }
+
+  return(
+    <div >
+
+{/* navbar */}
+<nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div className="container-fluid">
+    <a className="navbar-brand" href="#">E-Filing</a>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+        {/* link for home */}
+        <li className="nav-item">
+          <NavLink className="nav-link" to="home">Home</NavLink>
+        </li>
+      
+        {
+                !userLoginStatus ?
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Login</Link>
+                  </li> :
+
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link" onClick={() => logOutUser()} data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Logout</Link>
+                  </li>
+              }
+
+
+
+
+
+<li className="nav-item">
+        <Link to="/efile" className="nav-link">E-Filing</Link>
+      </li>
     
+        <li className="nav-item">
+          <NavLink className="nav-link" to="register">Register</NavLink>
+        </li>
 
-      //post req
-      axios.post("/user/createuser", userObj)
-          .then(res => {
-              let resObj = res.data;
-              alert(resObj.message)
-              //navigate to login component
-            
-          })
-          .catch(err => {
-              console.log(err);
-              alert("something went wrong")
-          })
+      </ul>
 
-  }
+    </div>
+  </div>
+</nav>
+      {/* Create routes for components */}
+      <Routes>
+        {/* route for home */}
 
-
-
-
-
-
-  return (
-
-      <form className="w-50 mx-auto mt-5" onSubmit={handleSubmit(onFormSubmit)}>
-          <input type="text" className="form-control mb-3"  {...register("username")} placeholder="Username" />
-          <input type="password" className="form-control mb-3"  {...register("password")} placeholder="Password" />
-          <input type="email" className="form-control mb-3"  {...register("email")} placeholder="E-mail" />
-          <input type="date" className="form-control mb-3"  {...register("dob")} placeholder="Date of birth" />
+        <Route path="/home" element={<Home />} />
         
+        <Route path="/efile" element={< Efile/>} />
+        <Route path="/login" element={<Login  setUserLoginStatus={setUserLoginStatus} />} />
+        <Route path="/register" element={<Register />} />
 
-          <button className="btn btn-success">Register</button>
-      </form>
-
-
+      </Routes>
+    
+    </div>
   )
- 
-
-
-
 }
 
 export default App;
