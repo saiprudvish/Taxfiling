@@ -1,56 +1,52 @@
+import {Link,NavLink, Outlet} from 'react-router-dom'
+import React from 'react'
+import './Efile.css'
+function Efile (){
 
-import {useState} from 'react'
-import { useForm } from "react-hook-form";
-import axios from 'axios';
+    return(
 
-function Efile() {
-      
-  const { register, handleSubmit } = useForm();
- 
-  
-  
-  const onFormSubmit = (userObj) => {
-
-     
-      //add userObj to formData object
-    
-
-      //post req
-      axios.post("/user/createuser", userObj)
-          .then(res => {
-              let resObj = res.data;
-              alert(resObj.message)
-              //navigate to login component
-            
-          })
-          .catch(err => {
-              console.log(err);
-              alert("something went wrong")
-          })
-
-  }
-
-
-
-
-
-
-  return (
-      
-    <div>
-         <h1 className="display-4 text-info text-center">START FILING</h1>
-      <form className="w-50 mx-auto mt-5" onSubmit={handleSubmit(onFormSubmit)}>
-          <input type="text" className="form-control mb-3"  {...register("username")} placeholder="Username" />
-          <input type="password" className="form-control mb-3"  {...register("password")} placeholder="Password" />
-          <input type="email" className="form-control mb-3"  {...register("email")} placeholder="E-mail" />
-          <input type="date" className="form-control mb-3"  {...register("dob")} placeholder="Date of birth" />
+        <div>
+        <p className="display-2 text-center text-primary">E-FILING</p>
         
-      
-          <button className="btn btn-success">Register</button>
-      </form>
-   </div>
+        {/* create links for children
+        <ul className="nav justify-content-center">
+        <li className="nav-item">
+          <NavLink className="nav-link active" to="step1">STEP1</NavLink>  
+        </li>
+    
+          <li className="nav-item">
+          <NavLink className="nav-link" to="step2">STEP2</NavLink>  
+        </li>
+          
+    
+         
+    
+        
+        </ul> */}
 
-  )
- 
-  }
+<ul class="nav nav-pills mx-auto">
+  <li class="nav-item mx-2">
+    <NavLink class="nav-link active" aria-current="page" to="step1">STEP1</NavLink>
+  </li>
+  <li class="nav-item mx-2">
+    <NavLink class="nav-link active" to="step2">STEP2</NavLink>
+  </li>
+  <li class="nav-item mx-2">
+    <NavLink class="nav-link active" to="step3">STEP3</NavLink>
+  </li>
+  <li class="nav-item mx-2">
+    <NavLink class="nav-link active" to="step4">STEP4</NavLink>
+  </li>
+  <li class="nav-item mx-2">
+    <NavLink class="nav-link active" to="step5">STEP5</NavLink>
+  </li>
+</ul>
+           
+
+        {/* placeholder */}
+        <Outlet />
+      </div>
+    );
+}
+
 export default Efile;

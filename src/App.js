@@ -3,7 +3,13 @@ import Home from './components/Home'
 import Register from './components/Register';
 import {useState} from 'react'
 import Login from './components/Login';
-import Efile from './components/efile';
+import Efile from './components/Efile';
+import Step1   from './components/Step1';
+import Step2 from './components/step2';
+import Step3 from './components/Step3';
+import Step4 from './components/Step4';
+import Step5 from './components/Step5';
+
 
 function App(){
 
@@ -32,15 +38,18 @@ function App(){
         <li className="nav-item">
           <NavLink className="nav-link" to="home">Home</NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" to="efile">efiling</NavLink>
+        </li>
       
         {
                 !userLoginStatus ?
                   <li className="nav-item">
-                    <Link to="/login" className="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Login</Link>
+                    <NavLink to="/login" className="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Login</NavLink>
                   </li> :
 
                   <li className="nav-item">
-                    <Link to="/login" className="nav-link" onClick={() => logOutUser()} data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Logout</Link>
+                    <NavLink to="/login" className="nav-link" onClick={() => logOutUser()} data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Logout</NavLink>
                   </li>
               }
 
@@ -48,9 +57,6 @@ function App(){
 
 
 
-<li className="nav-item">
-        <Link to="/efile" className="nav-link">E-Filing</Link>
-      </li>
     
         <li className="nav-item">
           <NavLink className="nav-link" to="register">Register</NavLink>
@@ -66,8 +72,19 @@ function App(){
         {/* route for home */}
 
         <Route path="/home" element={<Home />} />
-        
-        <Route path="/efile" element={< Efile/>} />
+       
+        <Route path='/efile' element={<Efile />} >
+          {/* nested route for html */}
+          <Route path="step1" element={<Step1 />} />
+          {/* dealing with emprty path in nested routes */}
+          <Route path="" element={<Navigate replace to="Step1" />} />
+
+          {/* nested route for javascript */}
+          <Route path="step2" element={< Step2 />} />
+          <Route path="step3" element={< Step3 />} />
+          <Route path="step4" element={< Step4 />} />
+          <Route path="step5" element={< Step5 />} />
+        </Route>
         <Route path="/login" element={<Login  setUserLoginStatus={setUserLoginStatus} />} />
         <Route path="/register" element={<Register />} />
 
